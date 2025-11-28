@@ -1,7 +1,8 @@
 import express from 'express'
 import * as dotenv from 'dotenv'
 import cors from 'cors'
-import  OpenAI from 'openai'
+import OpenAI from 'openai'
+import { connectDB } from "./db.js";
 
 dotenv.config()
 
@@ -15,36 +16,91 @@ app.use(express.json())
 
 app.get('/', async (req, res) => {
   res.status(200).send({
-    message: 'Hello from CodeX!'
+    message: 'Hello from codex (with RAG)!'
   })
 })
+//embedding function
+async function embedQuery(text) {
+  const res = await openai.embeddings.create({
+    model: process.env.EMBEDDING_MODEL,
+    input: text
+  });
+  return res.data[0].embedding;
+}
+//RAG retrieval function
+async function retrieveChunks(query) {
+  const db = await connectDB();
+  const col = db.collection("kb_chunks");
 
-app.post('/', async (req, res) => {
+  // Convert query to embedding
+  const queryVector = await embedQuery(query);
+
+  // MongoDB Atlas vector search pipeline
+  const pipeline = [
+    {
+      $vectorSearch: {
+        index: "vector_index",
+        path: "embedding",
+        queryVector: queryVector,
+        numCandidates: 200,
+        limit: 5
+      }
+    },
+    {
+      $project: {
+        text: 1,
+        score: { $meta: "vectorSearchScore" }
+      }
+    }
+  ];
+
+  return await col.aggregate(pipeline).toArray();
+}
+
+app.post("/", async (req, res) => {
   try {
-    const prompt = req.body.prompt;
+    const query = req.body.prompt;
+
+//retrieve relevant docs
+
+    const results = await retrieveChunks(query);
+    const context = results.map(r => r.text).join("\n\n");
+
+
+// build GPT with prompt context
+
+    const prompt = `
+        You are an AI assistant. Use the following context to answer the question.
+        Context:
+        ${context}
+        Question:
+        ${query}
+        If the answer is not in the context, say:
+        "I cannot find the answer in the document."
+        `;
+
+
+// call GPT with RAG prompt
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4.1-mini",
-      messages: [
-        { role: "user", content: prompt }
-      ],
-      temperature: 0,      // How random the output should be - 0 = very predictable, 1 = more creative --> range 0-1
-      max_tokens: 3000,    // Maximum number of tokens the model can generate in the response Higher = longer answers, more cost --> range 50-4000 // 1 token ≈ 3–4 characters
-      top_p: 1, //nucleus sampling: picks tokens with highest probability-  1 = disabled (take best tokens) --> range 0-1
-      frequency_penalty: 0.5, // Penalizes repetition of words -  Positive value reduces repeated lines/phrases --> range 0-2
-      presence_penalty: 0 //Encourages talking about new topics - 0 = no penalty/encouragement--> range 0-2
+      model: process.env.CHAT_MODEL,
+      messages: [{ role: "user", content: prompt }],
+      temperature: 0,
+      max_tokens: 3000
     });
 
     res.status(200).send({
-      bot: response.choices[0].message.content
+      bot: response.choices[0].message.content,
+      contextUsed: results   // optional: send retrieved chunks to UI
     });
 
   } catch (error) {
-    console.error(error);
-    res.status(500).send(error || 'Something went wrong');
+    console.error("RAG ERROR:", error);
+    res.status(500).send(error?.message || "Something went wrong");
   }
 });
 
+//start server
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`AI server started on port ${PORT}`));
