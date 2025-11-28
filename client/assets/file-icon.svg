@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="128" height="128" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+  <title>Download File Icon</title>
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#4f46e5"/>
+      <stop offset="1" stop-color="#06b6d4"/>
+    </linearGradient>
+    <clipPath id="fileClip">
+      <path d="M10 8h28l10 10v36a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4V12a4 4 0 0 1 4-4z"/>
+    </clipPath>
+  </defs>
+
+  <!-- Document shape -->
+  <g transform="translate(0 0)">
+    <path d="M10 8h28l10 10v36a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4V12a4 4 0 0 1 4-4z"
+          fill="url(#g)" opacity="0.95"/>
+    <!-- Fold -->
+    <path d="M38 8v10a2 2 0 0 0 2 2h10" fill="#ffffff" opacity="0.15"/>
+  </g>
+
+  <!-- Arrow (download) -->
+  <g transform="translate(0 0)" clip-path="url(#fileClip)">
+    <rect x="14" y="30" width="36" height="16" rx="2" fill="#ffffff" opacity="0.06"/>
+    <path d="M32 18v18" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M24 26l8 8 8-8" fill="none" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="20" y="44" width="24" height="4" rx="1.2" fill="#ffffff" opacity="0.12"/>
+  </g>
+
+  <!-- Outline -->
+  <path d="M10 8h28l10 10v36a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4V12a4 4 0 0 1 4-4z"
+        fill="none" stroke="#0f172a" stroke-opacity="0.06" stroke-width="1"/>
+
+</svg>

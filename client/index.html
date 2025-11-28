@@ -1,21 +1,45 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Your coding AI</title>
-    <link rel = "stylesheet" href="style.css"> 
-  </head>
-  <body>
-    <div id="app">
-      <div id="chat_container"></div>
-      <form>
-        <textarea name="prompt" rows="1" cols="1" placeholder="Ask Codex...">
-        </textarea> 
-        <button type="submit"><img src="assets/send.svg"></button>
-      </form>
-    </div>
-    <script type="module" src="/script.js"></script>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Your Coding AI</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div id="app">
+            <!-- Chat container -->
+            <div id="chat_container"></div>
+
+            <!-- NEW INPUT UI -->
+            <form id="chat-form">
+                <!-- Drag & Drop Upload Box -->
+                <div id="upload-box" class="upload-box">
+                    <div id="upload-icon" class="upload-icon">
+                        <img src="assets/plus.svg" width="24" />
+                    </div>
+                    <input
+                        type="file"
+                        id="fileInput"
+                        hidden
+                        accept=".pdf,.docx,.txt,.md,.csv,.json,.js,.ts,.html,.css,.py,.java,.c,.cpp"
+                    />
+                </div>
+
+                <!-- Selected File Preview -->
+                <div id="file-preview" class="file-preview hidden">
+                    <span id="file-name"></span>
+                    <button id="remove-file" type="button">✖</button>
+                </div>
+
+                <!-- Prompt Input -->
+                <textarea name="prompt" rows="1" cols="1" placeholder="Ask Codex..."></textarea>
+
+                <button type="submit"><img src="assets/send.svg" /></button>
+            </form>
+        </div>
+
+        <script type="module" src="/script.js"></script>
+    </body>
 </html>
