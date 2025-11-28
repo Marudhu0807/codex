@@ -82,15 +82,14 @@ app.post("/", async (req, res) => {
 
 // call GPT with RAG prompt
 
-    const response = await openai.chat.completions.create({
+const response = await openai.responses.create({
       model: process.env.CHAT_MODEL,
-      messages: [{ role: "user", content: prompt }],
-      temperature: 0,
-      max_tokens: 3000
+      input: prompt,
+      max_output_tokens: 3000
     });
 
     res.status(200).send({
-      bot: response.choices[0].message.content,
+      bot: response.output_text,
       contextUsed: results   // optional: send retrieved chunks to UI
     });
 
