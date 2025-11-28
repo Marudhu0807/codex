@@ -70,13 +70,12 @@ app.post("/", async (req, res) => {
 // build GPT with prompt context
 
     const prompt = `
-        You are an AI assistant. Use the following context to answer the question.
+        You are an AI assistant. Use the following context to answer the question as accurately as possible.
         Context:
         ${context}
         Question:
         ${query}
-        If the answer is not in the context, say:
-        "I cannot find the answer in the document."
+        If the answer is not in the context, answer based on your general knowledge and If you use your own knowledge because the context does not provide the answer, please indicate this clearly"
         `;
 
 
