@@ -1,5 +1,5 @@
-import bot from "./assets/bot.svg";
-import user from "./assets/user.svg";
+const bot = "/bot.svg";
+const user = "/user.svg";
 
 // DOM ELEMENTS
 const uploadBox = document.getElementById("upload-box");
@@ -15,7 +15,7 @@ const stopBtn = document.getElementById("stop-btn");
 let selectedFile = null;
 let isBotResponding = false;
 let loadInterval;
-let shouldStop = false;  // 🔥 NEW — Stop flag
+let shouldStop = false;
 
 // ----------------------------
 // FILE UPLOAD HANDLING
