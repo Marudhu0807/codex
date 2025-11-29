@@ -74,7 +74,7 @@ async function embedQuery(text, openai) {
 async function retrieveChunks(query, openai) {
     const db = await connectDB();
     const col = db.collection("kb_chunks");
-
+    
     // Convert query to embedding
     const queryVector = await embedQuery(query, openai);
 
@@ -85,8 +85,8 @@ async function retrieveChunks(query, openai) {
                 index: "vector_index",
                 path: "embedding",
                 queryVector: queryVector,
-                numCandidates: 200,
-                limit: 5,
+                numCandidates: parseInt(process.env.VECTOR_NUM_CANDIDATES || "200"),
+                limit: parseInt(process.env.VECTOR_SEARCH_LIMIT || "5")
             },
         },
         {

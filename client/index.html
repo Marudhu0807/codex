@@ -7,6 +7,7 @@
         <title>Your Coding AI</title>
         <link rel="stylesheet" href="style.css" />
     </head>
+
     <body>
         <div id="app">
             <!-- Chat container -->
@@ -14,6 +15,7 @@
 
             <!-- NEW INPUT UI -->
             <form id="chat-form">
+
                 <!-- Drag & Drop Upload Box -->
                 <div id="upload-box" class="upload-box">
                     <div id="upload-icon" class="upload-icon">
@@ -34,9 +36,22 @@
                 </div>
 
                 <!-- Prompt Input -->
-                <textarea name="prompt" rows="1" cols="1" placeholder="Ask Codex..."></textarea>
+                <textarea
+                    name="prompt"
+                    rows="1"
+                    cols="1"
+                    placeholder="Ask Codex..."
+                ></textarea>
 
-                <button type="submit"><img src="assets/send.svg" /></button>
+                <!-- SEND BUTTON -->
+                <button type="submit" id="send-btn">
+                    <img src="assets/send.svg" />
+                </button>
+
+                <!-- STOP BUTTON (NEW) -->
+                <button id="stop-btn" type="button" class="hidden stop-btn">
+                    ⏹ Stop
+                </button>
             </form>
         </div>
 

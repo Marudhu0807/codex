@@ -41,21 +41,23 @@ app.post("/", upload.single("file"), async (req, res) => {
         // Case 2: Query RAG flow
         const dbResults = await retrieveChunks(query, openai);
         let contextParts = [];
+        let context = [];
         // use top matching chunks from the just-uploaded file, because MongoDB Atlas Vector Search (dbResults) does not care about insertion order or timestamps. it may not provide the last added chunks
         if (freshDocs.length > 0) {
-            const topFresh = freshDocs.slice(0, 10).map((d) => d.text); // limit to fetch only 10 chunks of text - if needed can increased
+            const freshLimit = parseInt(process.env.FRESH_UPLOAD_CHUNK_LIMIT || "10");
+            const topFresh = freshDocs.slice(0, freshLimit).map((d) => d.text); // limit to fetch only 10 chunks of text - if needed can increased
             contextParts.push(...topFresh);
-        }
-        // append DB results (deduplicated)
-        const existingTexts = new Set(contextParts); //uset Set because much faster than scanning an array repeatedly.
-        for (let r of dbResults) {
-            if (!existingTexts.has(r.text)) {
-                //check and insert only the non duplicate text
-                contextParts.push(r.text);
-                existingTexts.add(r.text); //updates the Set used for duplicate checking.
+        } else {
+         // ONLY use DB vector search when NO new file is uploaded
+            const existingTexts = new Set(); //use Set because much faster than scanning an array repeatedly.
+            for (let r of dbResults) {
+                if (!existingTexts.has(r.text)) { //check and insert only the non duplicate text
+                    contextParts.push(r.text);
+                    existingTexts.add(r.text); //updates the Set used for duplicate checking.
+                }
             }
         }
-        const context = contextParts.join("\n\n");
+        context = contextParts.join("\n\n");
 
         const prompt = `
         You are an AI assistant. Use the following context to answer accurately.
