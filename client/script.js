@@ -117,7 +117,7 @@ function showChunksInfo(count, fileName) {
 
     const profile = document.createElement("div");
     profile.classList.add("profile");
-    profile.innerHTML = `<img src="assets/file-icon.svg" />`;
+    profile.innerHTML = `<img src="/file-icon.svg" />`;
 
     const bubble = document.createElement("div");
     bubble.classList.add("system-message", "chat-bubble");
@@ -129,7 +129,7 @@ function showChunksInfo(count, fileName) {
 
     bubble.innerHTML = `
         <div class="chunk-file-row">
-            <img src="assets/file-icon.svg" class="chunk-file-icon" />
+            <img src="/file-icon.svg" class="chunk-file-icon" />
             <span class="chunk-file-name">${fileName}</span>
         </div>
         <div class="chunk-file-status">
@@ -157,7 +157,7 @@ function addUserMessage(promptText) {
 
     const profile = document.createElement("div");
     profile.classList.add("profile");
-    profile.innerHTML = `<img src="assets/user.svg" />`;
+    profile.innerHTML = `<img src="/user.svg" />`;
 
     const bubble = document.createElement("div");
     bubble.classList.add("user-message", "chat-bubble");
@@ -174,7 +174,7 @@ function addBotMessage() {
 
     const profile = document.createElement("div");
     profile.classList.add("profile");
-    profile.innerHTML = `<img src="assets/bot.svg" />`;
+    profile.innerHTML = `<img src="/bot.svg" />`;
 
     const bubble = document.createElement("div");
     bubble.classList.add("ai-message", "chat-bubble");
