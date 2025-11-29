@@ -1,4 +1,4 @@
-Codex — AI Chatbot with RAG using Node.js, Express & MongoDB
+Codex — RAG-Powered Chatbot using Node.js, Express & MongoDB
 
 Codex is an intelligent chatbot that uses Retrieval-Augmented Generation (RAG) to provide accurate, context-aware responses from custom documents.
 It uses:
