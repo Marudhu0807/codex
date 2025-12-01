@@ -16,14 +16,33 @@ Custom RAG pipeline (retrieval + context injection)
 Codex allows users to upload documents, stores them as embeddings, and answers queries using the most relevant chunks.
 
 
-Project Structure
+workflow
 ```
-root/
-│── server.js          # Main Express server + RAG logic
-│── test-search.js     # Test file for vector search
-│── .env               # API keys + config
-│── package.json       
-└── README.md
+UPLOAD DOC
+   |
+   | (Embedding Model)
+   v
+ Vectorized Document -----> Mongo Atlas (stored)
+                                    ^
+                                    |
+USER QUESTION             (Query embedding)
+   |                               |
+   | (Embedding Model)             |
+   v                               |
+  Query Vector --------------------
+            |
+            v
+  Vector Search (Atlas)
+            |
+            v
+  Matched Chunks
+            |
+            v
+        GPT / LLM
+            |
+            v
+         Answer
+
 ```
 
 🔧 Installation
